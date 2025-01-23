@@ -4,6 +4,7 @@
  */
 package org.zabalburu.daw1.actividad16_2;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,14 +13,14 @@ import java.util.List;
  * @author Usuario
  */
 public class Evento {
-    private int generarIdEvento = 0;
+    private static int generarIdEvento = 0;
     private int idEvento;
     private String descripcion;
     private Date fecha;
     private String lugar;
     private boolean mayorEdad;
     private double coste;
-    private List<Persona> listaPersonas;
+    private List<Persona> listaPersonas = new ArrayList<>();
 
     public Evento(int id, String descripcion, Date fecha, String lugar, boolean mayorEdad, double coste) {
         this.idEvento = generarIdEvento++;
@@ -76,6 +77,33 @@ public class Evento {
 
     public void setCoste(double coste) {
         this.coste = coste;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.idEvento;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Evento other = (Evento) obj;
+        return this.idEvento == other.idEvento;
+    }
+
+    @Override
+    public String toString() {
+        return "Evento{" + "idEvento=" + idEvento + ", descripcion=" + descripcion + ", fecha=" + fecha + ", lugar=" + lugar + ", mayorEdad=" + mayorEdad + ", coste=" + coste + '}';
     }
     
     

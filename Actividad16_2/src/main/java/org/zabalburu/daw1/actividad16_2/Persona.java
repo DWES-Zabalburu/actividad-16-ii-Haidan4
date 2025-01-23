@@ -5,6 +5,7 @@
 package org.zabalburu.daw1.actividad16_2;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,25 +16,30 @@ import java.util.List;
  * @author Usuario
  */
 public class Persona {
-        
-    GregorianCalendar calendario = new GregorianCalendar();
     
-    private int generarIdPersona = 0;
+    private static int numPersonas = 0;
     private int idPersona;
     private String dni;
-    private Calendar fechaNacimiento;
+    private Date fechaNacimiento;
+    private String password;
     private String Nombre;
     private String Apellido;
     private boolean mayorEdad;
-    private List<Evento> listaEventos;
+    private List<Evento> listaEventos = new ArrayList<>();
 
-    public Persona(int idPersona, String dni, Calendar fechaNacimiento, String Nombre, String Apellido, boolean mayorEdad) {
-        this.idPersona = generarIdPersona++;
+    
+
+    public Persona() {
+        this.idPersona = numPersonas++;
+    }
+
+    public Persona(String dni, Date fechaNacimiento, String password, String Nombre, String Apellido, boolean mayorEdad) {
+        this();
         this.dni = dni;
         this.fechaNacimiento = fechaNacimiento;
+        this.password = password;
         this.Nombre = Nombre;
         this.Apellido = Apellido;
-        this.mayorEdad = mayorEdad;
     }
 
     public int getIdPersona() {
@@ -52,12 +58,12 @@ public class Persona {
         this.dni = dni;
     }
 
-    public Calendar getFechaNacimiento() {
-        return fechaNacimiento;
+    public String getPassword() {
+        return password;
     }
 
-    public void setFechaNacimiento(Calendar fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNombre() {
@@ -75,18 +81,48 @@ public class Persona {
     public void setApellido(String Apellido) {
         this.Apellido = Apellido;
     }
-
-    public boolean isMayorEdad() {
-        return mayorEdad;
+   
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + this.idPersona;
+        return hash;
     }
 
-    public void setMayorEdad(boolean mayorEdad) {
-        this.mayorEdad = mayorEdad;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Persona other = (Persona) obj;
+        return this.idPersona == other.idPersona;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona{" + "idPersona=" + idPersona + ", dni=" + dni + ", fechaNacimiento=" + fechaNacimiento + ", password=" + password + ", Nombre=" + Nombre + ", Apellido=" + Apellido + ", mayorEdad=" + mayorEdad + '}';
     }
     
-    public int getEdad(){
-        return this.fechaNacimiento - GregorianCalendar.getInstance();
     
+    
+    public boolean isMayorEdad(){
+        GregorianCalendar gcHoy = new GregorianCalendar();
+        GregorianCalendar gcNacimiento = new GregorianCalendar();
+        gcNacimiento.setTime(this.fechaNacimiento);
+        int añoActual = gcHoy.get(Calendar.YEAR);
+        int añoNacimiento = gcNacimiento.get(Calendar.YEAR);
+        int edad = añoActual - añoNacimiento;
+        if(gcHoy.get(Calendar.DAY_OF_YEAR)<gcNacimiento.get(Calendar.DAY_OF_YEAR)){
+            edad--;
+        }
+        return edad >= 18;
     }
+    
     
 }
